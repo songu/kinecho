@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kinecho - Voice Bedtime Stories</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  background: #faf7f2;
+  color: #222;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+}
+
+video {
+  width: 100%;
+  border-radius: 14px;
+  background: black;
+}
+
+h1 {
+  font-size: 20px;
+  margin-top: 12px;
+}
+
+p {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.section {
+  margin-top: 24px;
+}
+
+.section h2 {
+  font-size: 16px;
+}
+
+ul {
+  padding-left: 18px;
+}
+
+.preview {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.card {
+  min-width: 130px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  background: #ff6b6b;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.small {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* language switch */
+.lang-switch {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  background: white;
+  border-radius: 12px;
+  padding: 8px 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  font-size: 12px;
+}
+.lang-switch select {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="hero">
+
+    <video controls autoplay muted playsinline>
+      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+    </video>
+
+    <h1 id="title"></h1>
+    <p id="desc"></p>
+
+  </div>
+
+  <div class="section">
+    <h2 id="h2_1"></h2>
+    <ul id="list"></ul>
+  </div>
+
+  <div class="section">
+    <h2 id="h2_2"></h2>
+    <div class="preview">
+      <div class="card" id="c1"></div>
+      <div class="card" id="c2"></div>
+      <div class="card" id="c3"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a id="btn" class="btn"></a>
+    <div class="small" id="footer"></div>
+  </div>
+
+</div>
+
+<!-- language switch -->
+<div class="lang-switch">
+  🌍
+  <select id="langSelect">
+    <option value="en">EN</option>
+    <option value="zh">中文</option>
+    <option value="es">ES</option>
+    <option value="fr">FR</option>
+    <option value="ja">JA</option>
+    <option value="ko">KO</option>
+  </select>
+</div>
+
+<script>
+
+const APP_STORE = "https://apps.apple.com/app/your-kinecho-id";
+
+/* =========================
+   i18n DATA
+========================= */
+const i18n = {
+  en: {
+    title: "A bedtime story from parents’ voice",
+    desc: "Even when parents are far away, their voice stays with the child every night.",
+    h2_1: "Why families love Kinecho",
+    h2_2: "Stories from families",
+    list: [
+      "Real parental voice storytelling",
+      "Emotional bedtime connection",
+      "Remote family bonding"
+    ],
+    cards: ["Dad abroad", "Mom’s voice", "Grandma story"],
+    btn: "Download Kinecho",
+    footer: "Preserve your voice. Stay close, always."
+  },
+
+  zh: {
+    title: "来自父母声音的睡前故事",
+    desc: "即使相隔千里，父母的声音依然陪伴孩子入睡。",
+    h2_1: "为什么家庭喜欢Kinecho",
+    h2_2: "家庭故事",
+    list: ["真实父母声音", "睡前情感陪伴", "远程亲子连接"],
+    cards: ["爸爸出差", "妈妈声音", "奶奶故事"],
+    btn: "下载 Kinecho",
+    footer: "保存你的声音，让爱一直在"
+  },
+
+  es: {
+    title: "Cuentos para dormir con la voz de los padres",
+    desc: "Aunque estén lejos, la voz de los padres acompaña al niño cada noche.",
+    h2_1: "Por qué las familias aman Kinecho",
+    h2_2: "Historias familiares",
+    list: ["Voz real de los padres", "Conexión emocional", "Vínculo a distancia"],
+    cards: ["Papá lejos", "Mamá", "Abuela"],
+    btn: "Descargar Kinecho",
+    footer: "Guarda tu voz. Mantente cerca."
+  },
+
+  fr: {
+    title: "Histoires du soir avec la voix des parents",
+    desc: "Même loin, la voix des parents accompagne l’enfant chaque nuit.",
+    h2_1: "Pourquoi les familles aiment Kinecho",
+    h2_2: "Histoires familiales",
+    list: ["Voix réelle des parents", "Lien émotionnel", "Connexion à distance"],
+    cards: ["Papa loin", "Maman", "Grand-mère"],
+    btn: "Télécharger Kinecho",
+    footer: "Préservez votre voix. Restez proches."
+  },
+
+  ja: {
+    title: "親の声で届けるおやすみストーリー",
+    desc: "たとえ離れていても、親の声は毎晩子どもに寄り添います。",
+    h2_1: "Kinechoが選ばれる理由",
+    h2_2: "家族のストーリー",
+    list: ["親のリアルな声", "安心できる寝る前の時間", "遠くの家族をつなぐ"],
+    cards: ["単身赴任の父", "母の声", "祖母の物語"],
+    btn: "Kinechoをダウンロード",
+    footer: "声を残し、心をつなぐ"
+  },
+
+  ko: {
+    title: "부모의 목소리로 전하는 잠자리 이야기",
+    desc: "멀리 있어도 부모의 목소리는 매일 밤 아이와 함께합니다.",
+    h2_1: "Kinecho를 선택하는 이유",
+    h2_2: "가족 이야기",
+    list: ["부모의 실제 목소리", "잠자리 정서 연결", "원거리 가족 연결"],
+    cards: ["아빠 출장", "엄마 목소리", "할머니 이야기"],
+    btn: "Kinecho 다운로드",
+    footer: "목소리를 남기고 마음을 잇다"
+  }
+};
+
+/* =========================
+   detect language
+========================= */
+function detectLang() {
+  const lang = navigator.language || "en";
+
+  if (lang.startsWith("zh")) return "zh";
+  if (lang.startsWith("es")) return "es";
+  if (lang.startsWith("fr")) return "fr";
+  if (lang.startsWith("ja")) return "ja";
+  if (lang.startsWith("ko")) return "ko";
+
+  return "en";
+}
+
+/* =========================
+   render
+========================= */
+function render(lang) {
+  const t = i18n[lang] || i18n.en;
+
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("desc").innerText = t.desc;
+  document.getElementById("h2_1").innerText = t.h2_1;
+  document.getElementById("h2_2").innerText = t.h2_2;
+
+  const ul = document.getElementById("list");
+  ul.innerHTML = "";
+  t.list.forEach(i => {
+    const li = document.createElement("li");
+    li.innerText = i;
+    ul.appendChild(li);
+  });
+
+  document.getElementById("c1").innerText = t.cards[0];
+  document.getElementById("c2").innerText = t.cards[1];
+  document.getElementById("c3").innerText = t.cards[2];
+
+  document.getElementById("btn").innerText = t.btn;
+  document.getElementById("btn").href = APP_STORE;
+
+  document.getElementById("footer").innerText = t.footer;
+
+  document.getElementById("langSelect").value = lang;
+}
+
+/* =========================
+   init
+========================= */
+let lang = localStorage.getItem("kinecho_lang") || detectLang();
+
+render(lang);
+
+/* save language */
+function setLang(l) {
+  lang = l;
+  localStorage.setItem("kinecho_lang", l);
+  render(l);
+}
+
+/* switch */
+document.getElementById("langSelect").addEventListener("change", (e) => {
+  setLang(e.target.value);
+});
+
+</script>
+
+</body>
+</html>
